@@ -20,7 +20,13 @@ from models import UserProfile
 def home():
     """Render website's home page."""
     return render_template('home.html')
-
+    
+    
+@app.route('/secure_page')
+@login_required
+def secure_page():
+    """Render website's home page."""
+    return render_template('secure_page.html')
 
 @app.route('/about/')
 def about():
@@ -31,6 +37,7 @@ def about():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
+    
     if request.method == 'POST' and form.validate_on_submit():
         # change this to actually validate the entire form submission
         # and not just one field
@@ -50,6 +57,15 @@ def login():
             flash("Successfully logged in")
             return redirect(url_for("secure_page"))  # they should be redirected to a secure-page route instead
     return render_template("login.html", form=form)
+
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You have logged out","danger")
+    return render_template('home.html')
 
 
 # user_loader callback. This callback is used to reload the user object from

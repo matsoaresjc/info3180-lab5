@@ -65,7 +65,7 @@ def login():
 def logout():
     logout_user()
     flash("You have logged out","danger")
-    return render_template('home.html')
+    return redirect(url_for('home'))
 
 
 # user_loader callback. This callback is used to reload the user object from
